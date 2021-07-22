@@ -1,0 +1,17 @@
+#define PI 3.14
+
+uniform highp mat4 view_proj;
+uniform mediump vec4 size;
+
+// positions are in world space
+attribute highp vec4 position;
+attribute mediump vec2 texcoord0;
+
+varying mediump vec2 var_texcoord0;
+
+void main()
+{
+    gl_Position = view_proj * vec4(position.x * size.x, position.y * size.y, position.z, 1.0);
+
+    var_texcoord0.x = PI * 1.5 + (texcoord0.x * 2.0 - 1.0) * PI;
+}

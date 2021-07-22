@@ -1,0 +1,21 @@
+[bootstrap]
+main_collection = /example/main.collectionc
+render = /lights/render/lights.renderc
+
+[script]
+shared_state = 1
+
+[display]
+width = 512
+height = 512
+
+[android]
+input_method = HiddenInputField
+
+[project]
+title = GPU
+dependencies#0 = https://github.com/britzl/defold-orthographic/archive/master.zip
+
+[library]
+include_dirs = lights
+

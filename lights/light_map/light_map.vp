@@ -1,0 +1,17 @@
+uniform highp mat4 view_proj;
+uniform mediump vec4 light_pos;
+uniform mediump vec4 size;
+
+// Positions are in world space
+attribute highp vec4 position;
+attribute mediump vec2 texcoord0;
+
+varying mediump vec2 var_texcoord0;
+
+void main()
+{
+    vec4 pos = vec4(position.x * size.x, position.y * size.y, position.z, 1.0) + light_pos;
+    gl_Position = view_proj * pos;
+
+    var_texcoord0 = texcoord0 * 2.0 - 1.0;
+}

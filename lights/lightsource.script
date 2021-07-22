@@ -1,0 +1,37 @@
+go.property("color", vmath.vector4(1, 1, 1, 1))
+go.property("radius", 256)
+go.property("falloff", 1)
+go.property("angle", 360)
+go.property("static", false)
+
+local lights = require "lights.lights"
+
+local function update_position()
+	local w, h = window.get_size()
+	local pos = go.get_world_position()
+	pos.x = pos.x - (w / 4)
+	pos.y = pos.y - (h / 4)
+	return pos
+end
+
+function init(self)
+	--profiler.enable_ui(true)
+	if self.angle == 360 then
+		self.angle = self.angle + 1
+	end
+	
+	self.light = lights.enable_light({
+		precision = 1,
+		position = update_position(),
+		color = self.color,
+		radial_falloff = self.falloff,
+		angle = vmath.vector4(math.rad(0), math.rad(self.angle / 2), math.rad(-0), math.rad(-self.angle / 2)),
+		size = vmath.vector3(self.radius * 2, self.radius * 2, 1)
+	})
+end
+
+function update(self, dt)
+	if not self.static then
+		self.light.position = update_position()
+	end
+end
