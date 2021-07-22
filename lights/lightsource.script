@@ -9,8 +9,8 @@ local lights = require "lights.lights"
 local function update_position()
 	local w, h = window.get_size()
 	local pos = go.get_world_position()
-	pos.x = pos.x - (w / 4)
-	pos.y = pos.y - (h / 4)
+	--pos.x = pos.x - (w / 4)
+	--pos.y = pos.y - (h / 4)
 	return pos
 end
 
@@ -20,7 +20,7 @@ function init(self)
 		self.angle = self.angle + 1
 	end
 	
-	self.light = lights.enable_light({
+	self.light = lights.add({
 		precision = 1,
 		position = update_position(),
 		color = self.color,
@@ -28,10 +28,14 @@ function init(self)
 		angle = vmath.vector4(math.rad(0), math.rad(self.angle / 2), math.rad(-0), math.rad(-self.angle / 2)),
 		size = vmath.vector3(self.radius * 2, self.radius * 2, 1)
 	})
+
+	timer.delay(1, false, function()
+		lights.set_position(self.light, update_position())
+	end)
 end
 
 function update(self, dt)
 	if not self.static then
-		self.light.position = update_position()
+		lights.set_position(self.light, update_position())
 	end
 end

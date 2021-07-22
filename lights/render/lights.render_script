@@ -7,6 +7,7 @@ camera.ORTHOGRAPHIC_RENDER_SCRIPT_USED = true
 local CLEAR_COLOR = hash("clear_color")
 
 function init(self)
+	self.occluder_pred = render.predicate({"light_occluder"})
 	self.tile_pred = render.predicate({"tile"})
 	self.gui_pred = render.predicate({"gui"})
 	self.text_pred = render.predicate({"text"})
@@ -20,21 +21,22 @@ function init(self)
 
 	lights.init()
 	lights.set_clear_color(self.clear_color)
-	
 end
 
 function update(self)
 	camera.get_cameras()
+	local viewport = camera.get_viewport()
+	local view = camera.get_view()
+	local projection = camera.get_projection()
 	
 	render.clear({[render.BUFFER_COLOR_BIT] = self.clear_color, [render.BUFFER_DEPTH_BIT] = 1, [render.BUFFER_STENCIL_BIT] = 0})
-	lights.draw(camera.get_view(), camera.get_projection(), self.tile_pred)
 
-	-- clear color
-	render.set_depth_mask(true)
-	-- setup the viewport
+	lights.draw(view, projection, self.occluder_pred)
 
-	render.set_view(camera.get_view())
-	render.set_projection(camera.get_projection())
+	-- draw world
+	render.set_viewport(viewport.x, viewport.y, viewport.z, viewport.w)
+	render.set_view(view)
+	render.set_projection(projection)
 
 	render.set_depth_mask(false)
 	render.disable_state(render.STATE_DEPTH_TEST)

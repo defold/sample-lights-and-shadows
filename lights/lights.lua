@@ -9,7 +9,6 @@ local shadow_map_target = nil
 local quad_pred = nil
 local clear_color = nil
 
-
 function M.init()
 	local color_params = { format = render.FORMAT_RGBA,
 							width = 64,
@@ -28,7 +27,6 @@ end
 function M.set_clear_color(color)
 	clear_color = color
 end
-
 
 -- draw quad using the light_map material
 -- with shadow_map as input texture
@@ -59,7 +57,7 @@ local function draw_light(light, view, projection, window_width, window_height, 
 
 end
 
-local function draw_occluder(light, draw_func)
+local function draw_occluder(light, view, projection, occluder_predicate)
 	-- Set render target size to precision
 	render.set_render_target_size(occluder_target, light.size_scaled.x, light.size_scaled.y)
 
@@ -80,7 +78,15 @@ local function draw_occluder(light, draw_func)
 	render.set_render_target(occluder_target, { transient = { render.BUFFER_DEPTH_BIT, render.BUFFER_STENCIL_BIT } } )
 	render.clear({[render.BUFFER_COLOR_BIT] = clear_color})
 
-	draw_func()
+	-- Draw occluder
+	render.set_depth_mask(false)
+	render.disable_state(render.STATE_DEPTH_TEST)
+	render.disable_state(render.STATE_STENCIL_TEST)
+	render.enable_state(render.STATE_BLEND)
+	render.set_blend_func(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)
+	render.disable_state(render.STATE_CULL_FACE)
+
+	render.draw(occluder_predicate)
 end
 
 local function draw_shadow_map(light)
@@ -122,70 +128,56 @@ function M.draw(view, projection, occluder_predicate)
 	local window_width = render.get_window_width()
 	local window_height = render.get_window_height()
 
-	for index, light in ipairs(lights) do
-		draw_occluder(light, function ()
-			render.set_depth_mask(false)
-			render.disable_state(render.STATE_DEPTH_TEST)
-			render.disable_state(render.STATE_STENCIL_TEST)
-			render.enable_state(render.STATE_BLEND)
-			render.set_blend_func(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)
-			render.disable_state(render.STATE_CULL_FACE)
-
-			render.draw(occluder_predicate)
-		end)
-
+	for _,light in pairs(lights) do
+		draw_occluder(light, view, projection, occluder_predicate)
 		draw_shadow_map(light)
-
 		draw_light(light, view, projection, window_width, window_height, function ()
 			--render.set_blend_func(render.BLEND_ONE, render.BLEND_ONE)
 		end)
 	end
 end
 
-function M.enable_light(light)
-	local index = #lights + 1
+function M.add(properties)
+	assert(properties)
 	id = id + 1
 
-	lights[index] = {
-		position = light.position,
-		size = light.size,
-		precision = light.precision,
-		color = light.color,
-		angle = light.angle,
-		radial_falloff = light.radial_falloff,
+	lights[id] = {
+		position = properties.position,
+		size = properties.size,
+		precision = properties.precision,
+		color = properties.color,
+		angle = properties.angle,
+		radial_falloff = properties.radial_falloff,
 
 		-- Defined in runtime
 		id = id,
-		size_half = light.size * 0.5,
-		size_scaled = light.size * light.precision,
+		size_half = properties.size * 0.5,
+		size_scaled = properties.size * properties.precision,
 	}
 
-	return lights[index]
+	return id
 end
 
-function M.disable_light(light)
-	-- Find index
-	local index = 0
-	for _index, value in ipairs(lights) do
-		if value.id == light.id then
-			index = _index
-			break
-		end
-	end
-
-	if index == 0 then
-		error("Can't find active light with ID:" .. light.id)
-	end
-
-	for i = index, #lights do
-		lights[i] = lights[i + 1]
-	end
+function M.remove(id)
+	assert(id)
+	assert(lights[id], "Unable to find light")
+	lights[id] = nil
 end
 
-function M.set_light_size(light, size)
+function M.set_light_size(id, size)
+	assert(id)
+	assert(lights[id], "Unable to find light")
+	assert(size)
+	local light = lights[id]
 	light.size = size
 	light.size_half = size * 0.5
 	light.size_scaled = size * light.precision
+end
+
+function M.set_position(id, position)
+	assert(id)
+	assert(lights[id], "Unable to find light")
+	lights[id].position = position
 end
 
 return M

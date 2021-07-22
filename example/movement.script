@@ -1,0 +1,40 @@
+go.property("speed", 300)
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	self.direction = vmath.vector3(0)
+end
+
+function update(self, dt)
+	local pos = go.get_position()
+	pos = pos + self.direction * self.speed * dt
+	go.set_position(pos)
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash("left") then
+		if action.pressed then
+			self.direction.x = -1
+		elseif action.released then
+			self.direction.x = 0
+		end
+	elseif action_id == hash("right") then
+		if action.pressed then
+			self.direction.x = 1
+		elseif action.released then
+			self.direction.x = 0
+		end
+	elseif action_id == hash("up") then
+		if action.pressed then
+			self.direction.y = 1
+		elseif action.released then
+			self.direction.y = 0
+		end
+	elseif action_id == hash("down") then
+		if action.pressed then
+			self.direction.y = -1
+		elseif action.released then
+			self.direction.y = 0
+		end
+	end
+end

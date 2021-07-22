@@ -1,4 +1,4 @@
-name: "main"
+name: "example"
 instances {
   id: "camera"
   prototype: "/orthographic/camera.go"
@@ -24,6 +24,16 @@ instances {
       id: "far_z"
       value: "5.0"
       type: PROPERTY_TYPE_NUMBER
+    }
+    properties {
+      id: "follow"
+      value: "true"
+      type: PROPERTY_TYPE_BOOLEAN
+    }
+    properties {
+      id: "follow_target"
+      value: "/mouselight"
+      type: PROPERTY_TYPE_HASH
     }
   }
   scale3 {
@@ -94,13 +104,13 @@ embedded_instances {
   }
 }
 embedded_instances {
-  id: "go1"
+  id: "occluder"
   data: "embedded_components {\n"
   "  id: \"sprite\"\n"
   "  type: \"sprite\"\n"
   "  data: \"tile_set: \\\"/example/asset/img.atlas\\\"\\n"
   "default_animation: \\\"cat4\\\"\\n"
-  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "material: \\\"/lights/light_occluder/light_occluder_sprite.material\\\"\\n"
   "blend_mode: BLEND_MODE_ALPHA\\n"
   "\"\n"
   "  position {\n"
@@ -152,7 +162,27 @@ embedded_instances {
   "}\n"
   "components {\n"
   "  id: \"mousemove\"\n"
-  "  component: \"/example/mousemove.script\"\n"
+  "  component: \"/example/movement.script\"\n"
+  "  position {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "  }\n"
+  "  rotation {\n"
+  "    x: 0.0\n"
+  "    y: 0.0\n"
+  "    z: 0.0\n"
+  "    w: 1.0\n"
+  "  }\n"
+  "}\n"
+  "embedded_components {\n"
+  "  id: \"sprite\"\n"
+  "  type: \"sprite\"\n"
+  "  data: \"tile_set: \\\"/builtins/graphics/particle_blob.tilesource\\\"\\n"
+  "default_animation: \\\"anim\\\"\\n"
+  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
+  "blend_mode: BLEND_MODE_ALPHA\\n"
+  "\"\n"
   "  position {\n"
   "    x: 0.0\n"
   "    y: 0.0\n"
@@ -207,8 +237,8 @@ embedded_instances {
   "}\n"
   ""
   position {
-    x: 141.0
-    y: 0.0
+    x: 126.0
+    y: -185.0
     z: 0.0
   }
   rotation {
