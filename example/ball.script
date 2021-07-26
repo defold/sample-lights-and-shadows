@@ -7,33 +7,40 @@ end
 
 function update(self, dt)
 	local pos = go.get_position()
-	pos = pos + self.direction * self.speed * dt
-	go.set_position(pos)
+	local movement_force = self.direction * 1000000 * dt
+	msg.post("#collisionobject", "apply_force", { position = pos, force = movement_force })
+
+	local dist = vmath.length(pos)
+	if dist > 400 then
+		local dir = vmath.normalize(pos)
+		local center_force = math.sqrt(dist) * dir * 50000 * dt
+		msg.post("#collisionobject", "apply_force", { position = pos, force = -center_force })
+	end
 end
 
 function on_input(self, action_id, action)
 	if action_id == hash("left") then
 		if action.pressed then
 			self.direction.x = -1
-		elseif action.released then
+		elseif action.released and self.direction.x == -1 then
 			self.direction.x = 0
 		end
 	elseif action_id == hash("right") then
 		if action.pressed then
 			self.direction.x = 1
-		elseif action.released then
+		elseif action.released and self.direction.x == 1 then
 			self.direction.x = 0
 		end
 	elseif action_id == hash("up") then
 		if action.pressed then
 			self.direction.y = 1
-		elseif action.released then
+		elseif action.released and self.direction.y == 1 then
 			self.direction.y = 0
 		end
 	elseif action_id == hash("down") then
 		if action.pressed then
 			self.direction.y = -1
-		elseif action.released then
+		elseif action.released and self.direction.y == -1 then
 			self.direction.y = 0
 		end
 	end

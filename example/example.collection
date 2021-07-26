@@ -32,7 +32,7 @@ instances {
     }
     properties {
       id: "follow_target"
-      value: "/mouselight"
+      value: "/ball"
       type: PROPERTY_TYPE_HASH
     }
   }
@@ -62,33 +62,12 @@ instances {
     z: 1.0
   }
 }
-scale_along_z: 0
-embedded_instances {
-  id: "light1"
-  data: "components {\n"
-  "  id: \"lightsource\"\n"
-  "  component: \"/lights/lightsource.script\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "  properties {\n"
-  "    id: \"color\"\n"
-  "    value: \"1.0, 0.0, 0.0, 1.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "}\n"
-  ""
+instances {
+  id: "block1"
+  prototype: "/example/block_narrow.go"
   position {
-    x: 0.0
-    y: 0.0
+    x: -39.0
+    y: -94.0
     z: 0.0
   }
   rotation {
@@ -103,32 +82,12 @@ embedded_instances {
     z: 1.0
   }
 }
-embedded_instances {
-  id: "occluder"
-  data: "embedded_components {\n"
-  "  id: \"sprite\"\n"
-  "  type: \"sprite\"\n"
-  "  data: \"tile_set: \\\"/example/asset/img.atlas\\\"\\n"
-  "default_animation: \\\"cat4\\\"\\n"
-  "material: \\\"/lights/light_occluder/light_occluder_sprite.material\\\"\\n"
-  "blend_mode: BLEND_MODE_ALPHA\\n"
-  "\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "}\n"
-  ""
+instances {
+  id: "block2"
+  prototype: "/example/block_narrow.go"
   position {
-    x: 0.0
-    y: 0.0
+    x: 172.0
+    y: 76.0
     z: 0.0
   }
   rotation {
@@ -143,62 +102,12 @@ embedded_instances {
     z: 1.0
   }
 }
-embedded_instances {
-  id: "mouselight"
-  data: "components {\n"
-  "  id: \"lightsource\"\n"
-  "  component: \"/lights/lightsource.script\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "}\n"
-  "components {\n"
-  "  id: \"mousemove\"\n"
-  "  component: \"/example/movement.script\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "}\n"
-  "embedded_components {\n"
-  "  id: \"sprite\"\n"
-  "  type: \"sprite\"\n"
-  "  data: \"tile_set: \\\"/builtins/graphics/particle_blob.tilesource\\\"\\n"
-  "default_animation: \\\"anim\\\"\\n"
-  "material: \\\"/builtins/materials/sprite.material\\\"\\n"
-  "blend_mode: BLEND_MODE_ALPHA\\n"
-  "\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "}\n"
-  ""
+instances {
+  id: "block3"
+  prototype: "/example/block_narrow.go"
   position {
-    x: 0.0
-    y: 0.0
+    x: -84.0
+    y: 59.0
     z: 0.0
   }
   rotation {
@@ -213,32 +122,32 @@ embedded_instances {
     z: 1.0
   }
 }
-embedded_instances {
-  id: "light2"
-  data: "components {\n"
-  "  id: \"lightsource\"\n"
-  "  component: \"/lights/lightsource.script\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "  properties {\n"
-  "    id: \"color\"\n"
-  "    value: \"1.0, 1.0, 0.0, 1.0\"\n"
-  "    type: PROPERTY_TYPE_VECTOR4\n"
-  "  }\n"
-  "}\n"
-  ""
+instances {
+  id: "block_large"
+  prototype: "/example/block_large.go"
   position {
     x: 126.0
-    y: -185.0
+    y: -6.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: -0.37060347
+    w: 0.92879117
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "ball"
+  prototype: "/example/ball.go"
+  position {
+    x: 0.0
+    y: 0.0
     z: 0.0
   }
   rotation {
@@ -253,3 +162,77 @@ embedded_instances {
     z: 1.0
   }
 }
+instances {
+  id: "blue_light"
+  prototype: "/example/light.go"
+  position {
+    x: -53.0
+    y: -31.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  component_properties {
+    id: "lightsource"
+    properties {
+      id: "color"
+      value: "0.5, 0.5, 1.0, 1.0"
+      type: PROPERTY_TYPE_VECTOR4
+    }
+    properties {
+      id: "radius"
+      value: "128.0"
+      type: PROPERTY_TYPE_NUMBER
+    }
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "block_large1"
+  prototype: "/example/block_large.go"
+  position {
+    x: -176.0
+    y: 13.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.554552
+    w: 0.832149
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "block4"
+  prototype: "/example/block_narrow.go"
+  position {
+    x: 49.0
+    y: 121.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+scale_along_z: 0

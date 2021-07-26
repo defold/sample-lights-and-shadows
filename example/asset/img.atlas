@@ -1,5 +1,29 @@
 images {
-  image: "/example/asset/cat4.png"
+  image: "/example/asset/ball_blue_small_alt.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/example/asset/ball_red_small_alt.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/example/asset/block_narrow.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/example/asset/block_small.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/example/asset/block_square.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/example/asset/block_large.png"
+  sprite_trim_mode: SPRITE_TRIM_MODE_OFF
+}
+images {
+  image: "/builtins/graphics/particle_blob.png"
   sprite_trim_mode: SPRITE_TRIM_MODE_OFF
 }
 margin: 0

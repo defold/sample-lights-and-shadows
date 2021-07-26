@@ -6,16 +6,20 @@ render = /lights/render/lights.renderc
 shared_state = 1
 
 [display]
-width = 512
-height = 512
+width = 1136
+height = 640
 
 [android]
 input_method = HiddenInputField
 
 [project]
-title = GPU
+title = Lights
 dependencies#0 = https://github.com/britzl/defold-orthographic/archive/master.zip
 
 [library]
 include_dirs = lights
+
+[physics]
+gravity_y = 0.0
+scale = 0.01
 

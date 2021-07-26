@@ -19,14 +19,13 @@ function init(self)
 	if self.angle == 360 then
 		self.angle = self.angle + 1
 	end
-	
+
 	self.light = lights.add({
-		precision = 1,
 		position = update_position(),
 		color = self.color,
 		radial_falloff = self.falloff,
 		angle = vmath.vector4(math.rad(0), math.rad(self.angle / 2), math.rad(-0), math.rad(-self.angle / 2)),
-		size = vmath.vector3(self.radius * 2, self.radius * 2, 1)
+		radius = self.radius
 	})
 
 	timer.delay(1, false, function()
