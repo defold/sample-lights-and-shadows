@@ -1,21 +1,11 @@
-name: "light_map"
-tags: "light_map"
-vertex_program: "/lights/light_map/light_map.vp"
-fragment_program: "/lights/light_map/light_map.fp"
+name: "shadow_map"
+tags: "shadow_map"
+vertex_program: "/lights/render/shadow_map.vp"
+fragment_program: "/lights/render/shadow_map.fp"
 vertex_space: VERTEX_SPACE_WORLD
 vertex_constants {
   name: "view_proj"
   type: CONSTANT_TYPE_VIEWPROJ
-  value {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-}
-vertex_constants {
-  name: "light_pos"
-  type: CONSTANT_TYPE_USER
   value {
     x: 0.0
     y: 0.0
@@ -34,27 +24,7 @@ vertex_constants {
   }
 }
 fragment_constants {
-  name: "property"
-  type: CONSTANT_TYPE_USER
-  value {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-}
-fragment_constants {
-  name: "color"
-  type: CONSTANT_TYPE_USER
-  value {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 0.0
-  }
-}
-fragment_constants {
-  name: "angle"
+  name: "resolution"
   type: CONSTANT_TYPE_USER
   value {
     x: 0.0

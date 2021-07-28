@@ -43,8 +43,8 @@ instances {
   }
 }
 instances {
-  id: "quad"
-  prototype: "/lights/quad/quad.go"
+  id: "light_quad"
+  prototype: "/lights/render/light_quad.go"
   position {
     x: 0.0
     y: 0.0
@@ -64,7 +64,7 @@ instances {
 }
 instances {
   id: "block1"
-  prototype: "/example/block_narrow.go"
+  prototype: "/example/block_small.go"
   position {
     x: -39.0
     y: -94.0
@@ -84,7 +84,7 @@ instances {
 }
 instances {
   id: "block2"
-  prototype: "/example/block_narrow.go"
+  prototype: "/example/block_small.go"
   position {
     x: 172.0
     y: 76.0
@@ -104,7 +104,7 @@ instances {
 }
 instances {
   id: "block3"
-  prototype: "/example/block_narrow.go"
+  prototype: "/example/block_small.go"
   position {
     x: -84.0
     y: 59.0
@@ -217,7 +217,7 @@ instances {
 }
 instances {
   id: "block4"
-  prototype: "/example/block_narrow.go"
+  prototype: "/example/block_small.go"
   position {
     x: 49.0
     y: 121.0
@@ -228,6 +228,46 @@ instances {
     y: 0.0
     z: 0.0
     w: 1.0
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "block_l"
+  prototype: "/example/block_l.go"
+  position {
+    x: -156.0
+    y: 163.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: -0.29740807
+    w: 0.9547505
+  }
+  scale3 {
+    x: 1.0
+    y: 1.0
+    z: 1.0
+  }
+}
+instances {
+  id: "block_narrow"
+  prototype: "/example/block_narrow.go"
+  position {
+    x: -139.0
+    y: -131.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.7704998
+    w: 0.63744026
   }
   scale3 {
     x: 1.0

@@ -10,7 +10,7 @@ uniform lowp sampler2D texture_sampler;
 varying mediump vec2 var_texcoord0;
 
 // Sample from the 1D distance map
-float sample(vec2 coord, float r) {
+float sample_from_distance_map(vec2 coord, float r) {
 	return step(r, texture2D(texture_sampler, coord).r);
 }
 
@@ -19,7 +19,7 @@ void main(void) {
 	float theta = atan(var_texcoord0.y, var_texcoord0.x);
 	
 	// Discard if not inside angle
-	if (theta > angle.y || theta < angle.w || (theta > 0 && theta < angle.x) || (theta < 0 && theta > angle.z)) 
+	if (theta > angle.y || theta < angle.w || (theta > 0.0 && theta < angle.x) || (theta < 0.0 && theta > angle.z)) 
 		discard;
 	
 	// Rectangular to polar
@@ -31,5 +31,5 @@ void main(void) {
 
 	// Multiply the summed amount by our distance, which gives us a radial falloff
 	// Then multiply by vertex (light) color  
-	gl_FragColor = color * vec4(sample(tc, r) * smoothstep(1.0, 0.0, r * property.x));
+	gl_FragColor = color * vec4(sample_from_distance_map(tc, r) * smoothstep(1.0, 0.0, r * property.x));
 }

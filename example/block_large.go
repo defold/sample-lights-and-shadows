@@ -1,9 +1,9 @@
 embedded_components {
   id: "sprite"
   type: "sprite"
-  data: "tile_set: \"/example/asset/img.atlas\"\n"
+  data: "tile_set: \"/example/asset/images.atlas\"\n"
   "default_animation: \"block_large\"\n"
-  "material: \"/lights/light_occluder/light_occluder_sprite.material\"\n"
+  "material: \"/lights/materials/light_occluder_sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
   position {

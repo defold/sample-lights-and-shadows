@@ -191,7 +191,15 @@ end
 function M.set_position(id, position)
 	assert(id)
 	assert(lights[id], "Unable to find light")
+	assert(position, "You must provide a position")
 	lights[id].position = position
+end
+
+function M.set_angle(id, angle)
+	assert(id)
+	assert(lights[id], "Unable to find light")
+	assert(angle, "You must provide an angle")
+	lights[id].angle = angle
 end
 
 return M

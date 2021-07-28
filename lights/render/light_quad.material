@@ -1,7 +1,7 @@
-name: "quad"
+name: "light_quad"
 tags: "light_quad"
-vertex_program: "/lights/quad/quad.vp"
-fragment_program: "/lights/quad/quad.fp"
+vertex_program: "/lights/render/light_quad.vp"
+fragment_program: "/lights/render/light_quad.fp"
 vertex_space: VERTEX_SPACE_WORLD
 samplers {
   name: "tex0"

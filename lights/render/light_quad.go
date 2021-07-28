@@ -2,7 +2,7 @@ embedded_components {
   id: "model"
   type: "model"
   data: "mesh: \"/builtins/assets/meshes/quad.dae\"\n"
-  "material: \"/lights/quad/quad.material\"\n"
+  "material: \"/lights/render/light_quad.material\"\n"
   "skeleton: \"\"\n"
   "animations: \"\"\n"
   "default_animation: \"\"\n"
