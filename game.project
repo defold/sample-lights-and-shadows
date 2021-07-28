@@ -8,13 +8,14 @@ shared_state = 1
 [display]
 width = 1136
 height = 640
+high_dpi = 1
 
 [android]
 input_method = HiddenInputField
 
 [project]
 title = Lights
-dependencies#0 = https://github.com/britzl/defold-orthographic/archive/master.zip
+dependencies = 
 
 [library]
 include_dirs = lights

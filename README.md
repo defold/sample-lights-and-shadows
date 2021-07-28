@@ -24,14 +24,30 @@ The main components of this light and shadow casting example are:
 * `lights/render/lights.render` and `lights/render/lights.render_script` - The render file and render script used when drawing lights and shadows (and also all of the standard Defold components such as sprites, particles, tilemaps etc)
 * `lights/materials/light_occluder_*.material` - Materials to use for sprite, tilemaps and other components that should occlude light and cast shadows.
 
+
 ## Step 1 - Render script
 Open **game.project** and scroll down to `Bootstrap` and change Render file to `lights/render/lights.render`. This render script works like the default render script with the addition of also drawing lights and shadows.
+
+![](/docs/add_render_file_to_bootstrap.png)
+
 
 ## Step 2 - Add light quad
 Add the `lights/render/light_quad.go` to a collection where lights and shadows should be calculated.
 
+![](/docs/add_light_quad.png)
+
+
 ## Step 3 - Add lightsources
 Attach the `lights/lightsource.script` to any game object that should act as a lightsource.
 
+![](/docs/add_lightsource.png)
+
+Configure the lightsource properties to your liking.
+
+![](/docs/configure_lightsource.png)
+
+
 ## Step 4 - Add light occluders
-Change the material for any component that should cast shadows when hit by a lightsource. Select a material from `lights/materials/` matching the component type casting shadows.
+Change the material for any component that should cast shadows when lit by a lightsource. Select a material from `lights/materials/` matching the component type casting shadows.
+
+![](/docs/configure_light_occluder.png)
