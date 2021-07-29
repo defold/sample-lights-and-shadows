@@ -83,11 +83,10 @@ function init(self)
 		angle = update_angle(self.arc_angle),
 		radius = self.radius
 	})
+end
 
-	--[[timer.delay(1, false, function()
-		lights.set_angle(self.light, update_angle(self.arc_angle))
-		lights.set_position(self.light, go.get_world_position())
-	end)--]]
+function final(self)
+	lights.remove(self.light)
 end
 
 function update(self, dt)
