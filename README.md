@@ -1,5 +1,5 @@
 # Lights and Shadows
-Example of how to achieve pixel perfect shadows in a 2D view. The sample is based on the following the following sources:
+Example of how to achieve pixel perfect shadows in a 2D view. The sample is based on the following sources:
 
 * 2D Pixel Perfect Shadows LIBGDX example: https://github.com/mattdesl/lwjgl-basics/wiki/2D-Pixel-Perfect-Shadows
 * Adapted to Defold with technical discussion by d954mas: https://forum.defold.com/t/problem-with-shader/3808
