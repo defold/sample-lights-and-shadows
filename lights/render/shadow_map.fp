@@ -23,7 +23,11 @@ void main()
 	// Coord which we will sample from occlude map
 	vec2 coord = vec2(-inverseRes * sin(theta), inverseRes * cos(theta));
 	vec2 step = coord;
-	for (float y = 1.0; y < resolution.y; y += 1.0) {
+	float resy = resolution.y;
+	for (float y = 1.0; y < 50000.0; y += 1.0) {
+		// webgl doesn't allow for-loops with non constant end value
+		// we use this as a workaround
+		if (y > resolution.y) break;
 		
 		//sample the occlusion map
 		lowp float data = texture2D(texture_sampler, coord / 2.0 + 0.5).a;
@@ -34,7 +38,7 @@ void main()
 			distance = y / resolution.y;
 			break;
 		}
-			coord += step;
+		coord += step;
 	} 
 
 	gl_FragColor = vec4(vec3(distance), 1.0);

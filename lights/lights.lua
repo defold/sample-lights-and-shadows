@@ -10,7 +10,8 @@ local quad_pred = nil
 local clear_color = nil
 
 
-local DEFAULT_LIGHT_SIZE = 256
+local RENDER_TARGET_SIZE = nil
+
 local WHITE = vmath.vector4(1, 1, 1, 1)
 
 
@@ -43,11 +44,10 @@ local function draw_light(light, view, projection, window_width, window_height, 
 end
 
 local function draw_occluder(light, view, projection, occluder_predicate)
-	-- Set render target size to precision
-	render.set_render_target_size(occluder_target, light.size_scaled, light.size_scaled)
-
+	render.set_render_target_size(occluder_target, RENDER_TARGET_SIZE, RENDER_TARGET_SIZE)
+	
 	-- Set viewport
-	render.set_viewport(0, 0, light.size_scaled, light.size_scaled)
+	render.set_viewport(0, 0, RENDER_TARGET_SIZE, RENDER_TARGET_SIZE)
 
 	-- Set projection so occluders fill the render target
 	render.set_projection(vmath.matrix4_orthographic(0, light.size, 0, light.size, -5, 5))
@@ -75,11 +75,10 @@ local function draw_occluder(light, view, projection, occluder_predicate)
 end
 
 local function draw_shadow_map(light)
-	-- Set render target size to precision
-	render.set_render_target_size(shadow_map_target, light.size_scaled, 1)
+	render.set_render_target_size(shadow_map_target, RENDER_TARGET_SIZE, RENDER_TARGET_SIZE)
 
 	-- Set viewport
-	render.set_viewport(0, 0, light.size_scaled, light.size_scaled)
+	render.set_viewport(0, 0, RENDER_TARGET_SIZE, RENDER_TARGET_SIZE)
 
 	-- Set projection so occluders fill the render target
 	render.set_projection(vmath.matrix4_orthographic(0, light.size, 0, 1, -5, 5))
@@ -100,7 +99,7 @@ local function draw_shadow_map(light)
 
 	-- Only resolution.x
 	local constants = render.constant_buffer()
-	constants.resolution = vmath.vector4(light.size_scaled)
+	constants.resolution = vmath.vector4(RENDER_TARGET_SIZE)
 	constants.size = vmath.vector4(light.size, light.size, 1, 0)
 	render.draw(quad_pred, constants)
 
@@ -110,12 +109,17 @@ end
 
 
 function M.init(config)
-	local target_size = config and config.render_target_size or 64
+	local width = render.get_width()
+	local height = render.get_height()
+	local default_size = math.min(width, height)
+	default_size = default_size * 0.5
+		
+	RENDER_TARGET_SIZE = config and config.render_target_size or default_size
 
 	local color_params = {
 		format = render.FORMAT_RGBA,
-		width = target_size,
-		height = target_size,
+		width = RENDER_TARGET_SIZE,
+		height = RENDER_TARGET_SIZE,
 		min_filter = render.FILTER_LINEAR,
 		mag_filter = render.FILTER_LINEAR,
 		u_wrap = render.WRAP_CLAMP_TO_EDGE,
@@ -153,18 +157,15 @@ function M.add(properties)
 	id = id + 1
 
 	local size = properties.radius * 2
-	local precision = DEFAULT_LIGHT_SIZE / size
 
 	lights[id] = {
 		id = id,
 		position = properties.position,
-		size = size,
-		precision = precision,
 		color = properties.color or WHITE,
 		angle = properties.angle or 360,
 		radial_falloff = properties.radial_falloff or 1,
+		size = size,
 		size_half = size * 0.5,
-		size_scaled = size * precision,
 	}
 
 	return id
@@ -182,10 +183,8 @@ function M.set_light_radius(id, radius)
 	assert(radius)
 	local light = lights[id]
 	local size = radius * 2
-	local precision = DEFAULT_LIGHT_SIZE / size
 	light.size = size
 	light.size_half = size * 0.5
-	light.size_scaled = size * precision
 end
 
 function M.set_position(id, position)
