@@ -3,7 +3,7 @@ embedded_components {
   type: "sprite"
   data: "tile_set: \"/example/asset/images.atlas\"\n"
   "default_animation: \"block_narrow\"\n"
-  "material: \"/builtins/materials/sprite.material\"\n"
+  "material: \"/lights/materials/light_occluder_sprite.material\"\n"
   "blend_mode: BLEND_MODE_ALPHA\n"
   ""
   position {
