@@ -72,6 +72,7 @@ local function draw_occluder(light, view, projection, occluder_predicate)
 	render.disable_state(render.STATE_CULL_FACE)
 
 	render.draw(occluder_predicate)
+	render.set_render_target(render.RENDER_TARGET_DEFAULT)
 end
 
 local function draw_shadow_map(light)
@@ -105,6 +106,7 @@ local function draw_shadow_map(light)
 
 	render.disable_texture(0, occluder_target)
 	render.disable_material()
+	render.set_render_target(render.RENDER_TARGET_DEFAULT)
 end
 
 
