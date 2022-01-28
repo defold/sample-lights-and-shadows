@@ -36,6 +36,7 @@ void main()
 		// If the new distance is below the current, then we'll use that for our ray
 		if (data > THRESHOLD) {
 			distance = y / resolution.y;
+			//distance = y;
 			break;
 		}
 		coord += step;

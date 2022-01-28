@@ -4,10 +4,6 @@ materials {
   material: "/lights/render/shadow_map.material"
 }
 materials {
-  name: "light_map"
-  material: "/lights/render/light_map.material"
-}
-materials {
   name: "model"
   material: "/builtins/materials/model.material"
 }

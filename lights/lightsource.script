@@ -1,6 +1,7 @@
 go.property("color", vmath.vector4(1, 1, 1, 1))
 go.property("radius", 256)
 go.property("arc_angle", 360)
+go.property("falloff", 1)
 go.property("static", false)
 
 local lights = require "lights.lights"
@@ -81,6 +82,7 @@ function init(self)
 		position = go.get_world_position(),
 		color = self.color,
 		angle = update_angle(self.arc_angle),
+		falloff = self.falloff,
 		radius = self.radius
 	})
 end

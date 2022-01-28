@@ -69,7 +69,6 @@ function update(self)
 	render.set_viewport(0, 0, render.get_window_width(), render.get_window_height())
 	render.set_view(self.view)
 
-	lights.draw(self.view, get_projection(self), self.occluder_pred)
 	
 	render.set_depth_mask(false)
 	render.disable_state(render.STATE_DEPTH_TEST)
@@ -84,6 +83,8 @@ function update(self)
 	render.draw(self.particle_pred)
 	render.draw_debug3d()
 
+	lights.draw(self.view, get_projection(self), self.occluder_pred)
+	
 	-- render GUI
 	--
 	render.set_view(vmath.matrix4())
