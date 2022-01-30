@@ -166,16 +166,11 @@ function M.set_clear_color(color)
 end
 
 function M.draw(view, projection, occluder_predicate)
-
-
-	--draw_occluder(light, view, projection, occluder_predicate)
-	
 	for _,light in ipairs(lights) do
 		draw_occluder(light, view, projection, occluder_predicate)
 		draw_shadow_map(light)
 		draw_light(light, view, projection)
 	end
-	--debug(view, projection, window_width, window_height)
 end
 
 

@@ -28,17 +28,23 @@ void main(void) {
 	// r = 1.0 as far away from the light as possible
 	float r = length(var_texcoord0);
 
-	float coord = (theta + PI) / (2.0 * PI);
 	// The tex coord to sample our 1D lookup texture	
+	float coord = (theta + PI) / (2.0 * PI);
 	vec2 tc = vec2(coord, 0.0);
 	float visible = sample_from_distance_map(tc, r);
 
 	// Multiply the summed amount by our distance, which gives us a radial falloff
 	// Then multiply by vertex (light) color  
 	vec4 composed_color = color * vec4(visible * smoothstep(1.0, 0.0, r * falloff.x));
+
+	// Shadows become semi transparent black
 	composed_color.r *= visible;
 	composed_color.g *= visible;
 	composed_color.b *= visible;
+	//composed_color.a = r * falloff.x * (1.0 - visible);
 	composed_color.a = mix(composed_color.a, 1.0 - visible, r * falloff.x);
+	//composed_color.a = 1.0 - visible;
+
 	gl_FragColor = composed_color;
+
 }
