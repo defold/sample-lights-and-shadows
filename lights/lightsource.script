@@ -33,9 +33,9 @@ local function update_angle(arc_angle)
 	local x, y, z, w = 0, 0, 0, 0
 	if arc_angle > 180 then
 		x = 0
-		y = 180
+		y = 181
 		z = 0
-		w = -180
+		w = -181
 	else
 		local rotation = go.get(".", "euler.z") % 360
 		local from = (rotation - arc_angle / 2)
@@ -74,10 +74,6 @@ local function update_angle(arc_angle)
 end
 
 function init(self)
-	if self.arc_angle > 180 then
-		self.arc_angle = 360
-	end
-
 	self.light = lights.add({
 		position = go.get_world_position(),
 		color = self.color,
