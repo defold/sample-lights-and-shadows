@@ -38,10 +38,10 @@ void main(void) {
 	float inside_light = 1.0 - step(light_radius, r);
 	float outside_light = 1.0 - inside_light;
 
-	vec4 composed_color = vec4(0);
-	composed_color.r = mix(color.r, 0, r * falloff.x) * visible * inside_light;
-	composed_color.g = mix(color.g, 0, r * falloff.x) * visible * inside_light;
-	composed_color.b = mix(color.b, 0, r * falloff.x) * visible * inside_light;
+	vec4 composed_color = vec4(0.0);
+	composed_color.r = mix(color.r, 0.0, r * falloff.x) * visible * inside_light;
+	composed_color.g = mix(color.g, 0.0, r * falloff.x) * visible * inside_light;
+	composed_color.b = mix(color.b, 0.0, r * falloff.x) * visible * inside_light;
 	composed_color.a = 1.0 * r * falloff.x;
 	
 	gl_FragColor = composed_color;
