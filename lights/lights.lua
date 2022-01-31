@@ -20,7 +20,7 @@ local SHADOWMAP = {
 
 local quad_pred = nil
 local clear_color = nil
-
+local ambient_light = vmath.vector4(0.1, 0.1, 0.1, 1.0)
 local WHITE = vmath.vector4(1, 1, 1, 1)
 
 -- draw lights to quad with shadow_map as input texture
@@ -38,15 +38,13 @@ local function draw_light(light, view, projection)
 
 	local constants = render.constant_buffer()
 	constants.light_pos = vmath.vector4(light.position.x, light.position.y, light.position.z, 0)
-	--constants.size = vmath.vector4(size, size, 1, 0)
-	constants.size = vmath.vector4(light.size, light.size / window_width, 1, 0)
-	-- Color clamped to 0.0, 1.0
+	constants.size = vmath.vector4(light.size, 0, 0, 0)
 	constants.color = light.color
+	constants.ambient_light = ambient_light
 	constants.falloff = vmath.vector4(light.falloff, 0, 0, 0)
-	--constants.falloff = vmath.vector4(size / light.size, 0, 0, 0)
 	constants.angle = vmath.vector4(light.angle.x, light.angle.y, light.angle.z, light.angle.w)
 
-	--render.set_blend_func(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)
+	render.set_blend_func(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)
 	render.draw(quad_pred, constants)
 
 	render.disable_texture(0, SHADOWMAP.target)
@@ -57,7 +55,7 @@ end
 -- use the occluder_target as input
 local function draw_shadow_map(light)
 	-- Set viewport
-	render.set_viewport(0, 0, SHADOWMAP.width, SHADOWMAP.height)
+	render.set_viewport(0, 0, SHADOWMAP.width, 1)
 
 	-- Set projection
 	render.set_projection(vmath.matrix4_orthographic(0, light.size, 0, 1, -1, 1))
@@ -69,7 +67,7 @@ local function draw_shadow_map(light)
 	vmath.vector3(-light.size_half, -light.size_half, -1),
 	vmath.vector3(0, 1, 0)))
 
-	render.set_render_target_size(SHADOWMAP.target, SHADOWMAP.width, SHADOWMAP.height)
+	render.set_render_target_size(SHADOWMAP.target, SHADOWMAP.width, 1)
 	render.set_render_target(SHADOWMAP.target, { transient = { render.BUFFER_DEPTH_BIT } } )
 
 	-- Clear then draw
@@ -128,11 +126,12 @@ local function draw_occluder(light, view, projection, occluder_predicate)
 end
 
 function M.init(config)
-	local width = render.get_width()
-	local height = render.get_height()
+	local width = render.get_window_width()
+	local height = render.get_window_height()
+	local size = math.max(width, height)
 
-	OCCLUDER.width = width
-	OCCLUDER.height = height
+	OCCLUDER.width = size
+	OCCLUDER.height = size
 	OCCLUDER.params = {
 		format = render.FORMAT_RGBA,
 		width = OCCLUDER.width,
@@ -144,7 +143,7 @@ function M.init(config)
 	}
 	OCCLUDER.target = render.render_target({[render.BUFFER_COLOR_BIT] = OCCLUDER.params})
 
-	SHADOWMAP.width = width
+	SHADOWMAP.width = size
 	SHADOWMAP.height = 1
 	SHADOWMAP.params = {
 		format = render.FORMAT_RGBA,
@@ -166,7 +165,19 @@ function M.set_clear_color(color)
 end
 
 function M.draw(view, projection, occluder_predicate)
+	local width = render.get_window_width()
+	local height = render.get_window_height()
+	local size = math.max(width, height)
+
+	OCCLUDER.width = size
+	OCCLUDER.height = size
+	SHADOWMAP.width = size
+	SHADOWMAP.height = 1
+	
 	for _,light in ipairs(lights) do
+		light.size = size
+		light.size_half = size * 0.5
+		light.falloff = size / (light.radius * 2)
 		draw_occluder(light, view, projection, occluder_predicate)
 		draw_shadow_map(light)
 		draw_light(light, view, projection)
@@ -181,16 +192,12 @@ function M.add(properties)
 
 	id = id + 1
 
-	local size = properties.radius * 2
-
 	lights[id] = {
 		id = id,
 		position = properties.position,
 		color = properties.color or WHITE,
 		angle = properties.angle or 360,
-		falloff = properties.falloff or 1,
-		size = size,
-		size_half = size * 0.5,
+		radius = properties.radius
 	}
 
 	return id
@@ -207,9 +214,7 @@ function M.set_light_radius(id, radius)
 	assert(lights[id], "Unable to find light")
 	assert(radius)
 	local light = lights[id]
-	local size = radius * 2
-	light.size = size
-	light.size_half = size * 0.5
+	light.radius = radius
 end
 
 function M.set_position(id, position)

@@ -3,6 +3,7 @@
 // User defined
 uniform mediump vec4 falloff;
 uniform lowp vec4 color;
+uniform lowp vec4 ambient_light;
 uniform mediump vec4 angle;
 uniform mediump vec4 penetration;
 uniform mediump vec4 size;
@@ -28,23 +29,20 @@ void main(void) {
 	// r = 1.0 as far away from the light as possible
 	float r = length(var_texcoord0);
 
-	// The tex coord to sample our 1D lookup texture	
+	// The tex coord to sample our 1D lookup texture
 	float coord = (theta + PI) / (2.0 * PI);
 	vec2 tc = vec2(coord, 0.0);
 	float visible = sample_from_distance_map(tc, r);
 
-	// Multiply the summed amount by our distance, which gives us a radial falloff
-	// Then multiply by vertex (light) color  
-	vec4 composed_color = color * vec4(visible * smoothstep(1.0, 0.0, r * falloff.x));
+	float light_radius = (size.x / falloff.x) / size.x;
+	float inside_light = 1.0 - step(light_radius, r);
+	float outside_light = 1.0 - inside_light;
+	//visible = visible * inside_light;
 
-	// Shadows become semi transparent black
-	composed_color.r *= visible;
-	composed_color.g *= visible;
-	composed_color.b *= visible;
-	//composed_color.a = r * falloff.x * (1.0 - visible);
-	composed_color.a = mix(composed_color.a, 1.0 - visible, r * falloff.x);
-	//composed_color.a = 1.0 - visible;
-
+	vec4 composed_color = vec4(0);
+	composed_color.r = mix(color.r, 0, r * falloff.x) * visible * inside_light;
+	composed_color.g = mix(color.g, 0, r * falloff.x) * visible * inside_light;
+	composed_color.b = mix(color.b, 0, r * falloff.x) * visible * inside_light;
+	composed_color.a = 1.0 * r * falloff.x;
 	gl_FragColor = composed_color;
-
 }

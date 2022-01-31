@@ -2,6 +2,7 @@ go.property("speed", 300)
 
 function init(self)
 	msg.post(".", "acquire_input_focus")
+	msg.post("@render:", "use_fixed_fit_projection", { near = -10, far = 10})
 	msg.post("camera", "acquire_camera_focus")
 	self.direction = vmath.vector3(0)
 end
