@@ -94,5 +94,6 @@ function update(self, dt)
 		lights.set_angle(self.light, update_angle(self.arc_angle))
 		lights.set_position(self.light, go.get_world_position())
 		lights.set_light_radius(self.light, self.radius)
+		lights.set_color(self.light, self.color)
 	end
 end
