@@ -24,3 +24,9 @@ include_dirs = lights
 gravity_y = 0.0
 scale = 0.01
 
+[render]
+clear_color_red = 0.1
+clear_color_green = 0.1
+clear_color_blue = 0.1
+clear_color_alpha = 1.0
+

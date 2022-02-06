@@ -12,6 +12,11 @@ components {
     z: 0.0
     w: 1.0
   }
+  properties {
+    id: "color"
+    value: "0.4, 0.4, 1.0, 1.0"
+    type: PROPERTY_TYPE_VECTOR4
+  }
 }
 embedded_components {
   id: "sprite"
@@ -65,7 +70,7 @@ embedded_components {
   "}\n"
   "linear_damping: 0.3\n"
   "angular_damping: 0.0\n"
-  "locked_rotation: false\n"
+  "locked_rotation: true\n"
   "bullet: false\n"
   ""
   position {

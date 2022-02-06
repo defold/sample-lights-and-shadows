@@ -1,6 +1,7 @@
 go.property("color", vmath.vector4(1, 1, 1, 1))
 go.property("radius", 256)
 go.property("arc_angle", 360)
+go.property("falloff", 1)
 go.property("static", false)
 
 local lights = require "lights.lights"
@@ -30,57 +31,46 @@ w = lower to (z to -180)
 
 local function update_angle(arc_angle)
 	local x, y, z, w = 0, 0, 0, 0
-	if arc_angle > 180 then
-		x = 0
-		y = 180
+	local rotation = go.get(".", "euler.z") % 360
+	local from = (rotation - arc_angle / 2)
+	local to = (rotation + arc_angle / 2)
+	if from < 0 then
 		z = 0
-		w = -180
-	else
-		local rotation = go.get(".", "euler.z") % 360
-		local from = (rotation - arc_angle / 2)
-		local to = (rotation + arc_angle / 2)
-		if from < 0 then
-			z = 0
-			w = from
-			x = 0
+		w = from
+		x = 0
+		y = to
+	elseif from <= 180 then
+		x = from
+		if to > 180 then
+			y = 180
+			w = -180
+			z = (to - 360)
+		else
 			y = to
-		elseif from <= 180 then
-			x = from
-			if to > 180 then
-				y = 180
-				w = -180
-				z = (to - 360)
-			else
-				y = to
-				w = 0
-				z = 0
-			end
-		elseif from > 180 then
-			w = (from - 360)
-			if to > 360 then
-				z = 0
-				x = 0
-				y = (to - 360)
-			else
-				z = (to - 360)
-				x = 0
-				y = 0
-			end
+			w = 0
+			z = 0
+		end
+	elseif from > 180 then
+		w = (from - 360)
+		if to > 360 then
+			z = 0
+			x = 0
+			y = (to - 360)
+		else
+			z = (to - 360)
+			x = 0
+			y = 0
 		end
 	end
-
 	return vmath.vector4(math.rad(x), math.rad(y), math.rad(z), math.rad(w))
 end
 
 function init(self)
-	if self.arc_angle > 180 then
-		self.arc_angle = 360
-	end
-
 	self.light = lights.add({
 		position = go.get_world_position(),
 		color = self.color,
 		angle = update_angle(self.arc_angle),
+		falloff = self.falloff,
 		radius = self.radius
 	})
 end
