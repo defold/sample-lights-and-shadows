@@ -1,3 +1,23 @@
+components {
+  id: "lightsource"
+  component: "/lights/lightsource.script"
+  position {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+  }
+  rotation {
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    w: 1.0
+  }
+  properties {
+    id: "color"
+    value: "0.4, 0.4, 1.0, 1.0"
+    type: PROPERTY_TYPE_VECTOR4
+  }
+}
 embedded_components {
   id: "sprite"
   type: "sprite"

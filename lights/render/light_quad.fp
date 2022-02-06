@@ -3,9 +3,7 @@
 // User defined
 uniform mediump vec4 falloff;
 uniform lowp vec4 color;
-uniform lowp vec4 ambient_light;
 uniform mediump vec4 angle;
-uniform mediump vec4 penetration;
 uniform mediump vec4 size;
 
 uniform lowp sampler2D texture_sampler;
@@ -34,15 +32,7 @@ void main(void) {
 	vec2 tc = vec2(coord, 0.0);
 	float visible = sample_from_distance_map(tc, r);
 
-	float light_radius = (size.x / falloff.x) / size.x;
-	float inside_light = 1.0 - step(light_radius, r);
-	float outside_light = 1.0 - inside_light;
-
-	vec4 composed_color = vec4(0.0);
-	composed_color.r = mix(color.r, 0.0, r * falloff.x) * visible * inside_light;
-	composed_color.g = mix(color.g, 0.0, r * falloff.x) * visible * inside_light;
-	composed_color.b = mix(color.b, 0.0, r * falloff.x) * visible * inside_light;
-	composed_color.a = 1.0 * r * falloff.x;
-	
-	gl_FragColor = composed_color;
+	// Multiply the summed amount by our distance, which gives us a radial falloff
+	// Then multiply by vertex (light) color  
+	gl_FragColor = color * vec4(sample_from_distance_map(tc, r) * smoothstep(1.0, 0.0, r * falloff.x));
 }

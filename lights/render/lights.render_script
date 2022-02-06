@@ -79,11 +79,10 @@ function update(self)
 
 	render.set_projection(get_projection(self))
 
+	lights.draw(self.view, get_projection(self), self.occluder_pred)
 	render.draw(self.tile_pred)
 	render.draw(self.particle_pred)
 	render.draw_debug3d()
-
-	lights.draw(self.view, get_projection(self), self.occluder_pred)
 	
 	-- render GUI
 	--
