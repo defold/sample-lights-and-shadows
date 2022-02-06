@@ -203,4 +203,8 @@ function M.set_angle(id, angle)
 	lights[id].angle = angle
 end
 
+function M.set_color(id, color)
+	lights[id].color = color
+end
+
 return M
