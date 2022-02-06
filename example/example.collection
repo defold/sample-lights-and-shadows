@@ -213,22 +213,6 @@ collection_instances {
     z: 0.0
     w: 1.0
   }
-  instance_properties {
-    id: "go"
-    properties {
-      id: "lightsource"
-      properties {
-        id: "radius"
-        value: "256.0"
-        type: PROPERTY_TYPE_NUMBER
-      }
-      properties {
-        id: "falloff"
-        value: "2.0"
-        type: PROPERTY_TYPE_NUMBER
-      }
-    }
-  }
   scale3 {
     x: 1.0
     y: 1.0
