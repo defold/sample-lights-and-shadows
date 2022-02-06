@@ -203,9 +203,9 @@ collection_instances {
   id: "ball"
   collection: "/example/ball.collection"
   position {
-    x: 0.0
-    y: 0.0
-    z: 1.0
+    x: 48.0
+    y: 44.0
+    z: 0.0
   }
   rotation {
     x: 0.0
