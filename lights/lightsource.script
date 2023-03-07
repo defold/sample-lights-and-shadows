@@ -3,6 +3,7 @@ go.property("radius", 256)
 go.property("arc_angle", 360)
 go.property("falloff", 1)
 go.property("static", false)
+go.property("enabled", true)
 
 local lights = require "lights.lights"
 
@@ -71,7 +72,8 @@ function init(self)
 		color = self.color,
 		angle = update_angle(self.arc_angle),
 		falloff = self.falloff,
-		radius = self.radius
+		radius = self.radius,
+		enabled = self.enabled,
 	})
 end
 
@@ -85,5 +87,6 @@ function update(self, dt)
 		lights.set_position(self.light, go.get_world_position())
 		lights.set_light_radius(self.light, self.radius)
 		lights.set_color(self.light, self.color)
+		lights.set_enabled(self.light, self.enabled)
 	end
 end

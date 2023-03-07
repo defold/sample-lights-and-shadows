@@ -169,13 +169,15 @@ function M.draw(view, projection, occluder_predicate)
 	local size = math.max(width, height)
 
 	for _,light in ipairs(lights) do
-		local light_size = light.radius * 2
-		light.size = light_size
-		light.size_half = light_size / 2
-		light.falloff = 1
-		draw_occluder(light, view, projection, occluder_predicate)
-		draw_shadow_map(light)
-		draw_light(light, view, projection)
+		if light.enabled then
+			local light_size = light.radius * 2
+			light.size = light_size
+			light.size_half = light_size / 2
+			light.falloff = 1
+			draw_occluder(light, view, projection, occluder_predicate)
+			draw_shadow_map(light)
+			draw_light(light, view, projection)
+		end
 	end
 end
 
@@ -192,7 +194,8 @@ function M.add(properties)
 		position = properties.position,
 		color = properties.color or WHITE,
 		angle = properties.angle or 360,
-		radius = properties.radius
+		radius = properties.radius,
+		enabled = properties.enabled,
 	}
 
 	return id
@@ -228,6 +231,10 @@ end
 
 function M.set_color(id, color)
 	lights[id].color = color
+end
+
+function M.set_enabled(id, enabled)
+	lights[id].enabled = enabled
 end
 
 return M
