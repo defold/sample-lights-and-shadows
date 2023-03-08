@@ -2,21 +2,9 @@ local M = {}
 
 local lights = {}
 
+local render_target_size = 0
+
 local id = 0
-
-local OCCLUDER = {
-	target = nil,
-	width = 0,
-	height = 0,
-	params = {}
-}
-
-local SHADOWMAP = {
-	target = nil,
-	width = 0,
-	height = 0,
-	params = {}
-}
 
 local WHITE = vmath.vector4(1, 1, 1, 1)
 local BLACKTRANSPARENT = vmath.vector4(0, 0, 0, 0)
@@ -35,7 +23,7 @@ local function draw_light(light, view, projection)
 	render.set_view(view)
 	
 	render.set_render_target(render.RENDER_TARGET_DEFAULT)
-	render.enable_texture(0, SHADOWMAP.target, render.BUFFER_COLOR_BIT)
+	render.enable_texture(0, light.shadowmap, render.BUFFER_COLOR_BIT)
 
 	local constants = render.constant_buffer()
 	constants.light_pos = vmath.vector4(light.position.x, light.position.y, light.position.z, 0)
@@ -44,9 +32,9 @@ local function draw_light(light, view, projection)
 	constants.falloff = vmath.vector4(light.falloff, 0, 0, 0)
 	constants.angle = vmath.vector4(light.angle.x, light.angle.y, light.angle.z, light.angle.w)
 
-	render.draw(quad_pred, constants)
+	render.draw(quad_pred, { constants = constants })
 
-	render.disable_texture(0, SHADOWMAP.target)
+	render.disable_texture(0, light.shadowmap)
 end
 
 -- draw 1D shadow map containing distance to occluder
@@ -66,24 +54,24 @@ local function draw_shadow_map(light)
 	vmath.vector3(-light.size_half, -light.size_half, -1),
 	vmath.vector3(0, 1, 0)))
 
-	render.set_render_target_size(SHADOWMAP.target, light.size, 1)
-	render.set_render_target(SHADOWMAP.target, { transient = { render.BUFFER_DEPTH_BIT } } )
-
+	render.set_render_target_size(light.shadowmap, light.size, 1)
+	render.set_render_target(light.shadowmap, { transient = { render.BUFFER_DEPTH_BIT } } )
+	
 	-- Clear then draw
 	render.clear({[render.BUFFER_COLOR_BIT] = BLACKTRANSPARENT})
 
 	render.enable_material("shadow_map")
-	render.enable_texture(0, OCCLUDER.target, render.BUFFER_COLOR_BIT)
+	render.enable_texture(0, light.occluder, render.BUFFER_COLOR_BIT)
 
 	-- Constants
 	local constants = render.constant_buffer()
 	constants.resolution = vmath.vector4(light.size)
 	constants.size = vmath.vector4(light.size, light.size, 1, 0)
 
-	render.draw(quad_pred, constants)
+	render.draw(quad_pred, { constants = constants })
 
 	-- Reset
-	render.disable_texture(0, OCCLUDER.target)
+	render.disable_texture(0, light.occluder)
 	render.disable_material()
 	render.set_render_target(render.RENDER_TARGET_DEFAULT)
 end
@@ -91,7 +79,7 @@ end
 -- draw anything that should occlude light (ie with occluder predicate tag)
 -- draw it to a low res render target (occluder_target)
 local function draw_occluder(light, view, projection, occluder_predicate)
-	render.set_render_target_size(OCCLUDER.target, light.size, light.size)
+	render.set_render_target_size(light.occluder, light.size, light.size)
 
 	-- Set viewport
 	render.set_viewport(0, 0, light.size, light.size)
@@ -107,7 +95,7 @@ local function draw_occluder(light, view, projection, occluder_predicate)
 	vmath.vector3(0, 1, 0)))
 
 	-- Clear then draw
-	render.set_render_target(OCCLUDER.target, { transient = { render.BUFFER_DEPTH_BIT } } )
+	render.set_render_target(light.occluder, { transient = { render.BUFFER_DEPTH_BIT } } )
 	render.clear({[render.BUFFER_COLOR_BIT] = BLACKTRANSPARENT})
 
 	-- Draw occluder
@@ -124,37 +112,49 @@ local function draw_occluder(light, view, projection, occluder_predicate)
 	render.set_render_target(render.RENDER_TARGET_DEFAULT)
 end
 
+local function create_occluder(light, size)
+	local params = {
+		format = render.FORMAT_RGBA,
+		width = size,
+		height = size,
+		min_filter = render.FILTER_LINEAR,
+		mag_filter = render.FILTER_LINEAR,
+		u_wrap = render.WRAP_CLAMP_TO_EDGE,
+		v_wrap = render.WRAP_CLAMP_TO_EDGE
+	}
+	local rt = render.render_target({[render.BUFFER_COLOR_BIT] = params})
+	if not light then return rt end
+	light.occluder = rt
+end
+
+local function resize_occluder(light, size)
+	render.set_render_target_size(light.occluder, size, size)
+end
+
+local function create_shadowmap(light, size)
+	local params = {
+		format = render.FORMAT_RGBA,
+		width = size,
+		height = 1,
+		min_filter = render.FILTER_LINEAR,
+		mag_filter = render.FILTER_LINEAR,
+		u_wrap = render.WRAP_CLAMP_TO_EDGE,
+		v_wrap = render.WRAP_CLAMP_TO_EDGE
+	}
+	local rt = render.render_target({[render.BUFFER_COLOR_BIT] = params})
+	if not light then return rt end
+	light.shadowmap = rt
+end
+
+local function resize_shadowmap(light, size)
+	render.set_render_target_size(light.shadowmap, size, 1)
+end
+
+
 function M.init(config)
 	local width = render.get_window_width()
 	local height = render.get_window_height()
-	local size = math.max(width, height)
-
-	OCCLUDER.width = size
-	OCCLUDER.height = size
-	OCCLUDER.params = {
-		format = render.FORMAT_RGBA,
-		width = OCCLUDER.width,
-		height = OCCLUDER.height,
-		min_filter = render.FILTER_LINEAR,
-		mag_filter = render.FILTER_LINEAR,
-		u_wrap = render.WRAP_CLAMP_TO_EDGE,
-		v_wrap = render.WRAP_CLAMP_TO_EDGE
-	}
-	OCCLUDER.target = render.render_target({[render.BUFFER_COLOR_BIT] = OCCLUDER.params})
-
-	SHADOWMAP.width = size
-	SHADOWMAP.height = 1
-	SHADOWMAP.params = {
-		format = render.FORMAT_RGBA,
-		width = SHADOWMAP.width,
-		height = SHADOWMAP.height,
-		min_filter = render.FILTER_LINEAR,
-		mag_filter = render.FILTER_LINEAR,
-		u_wrap = render.WRAP_CLAMP_TO_EDGE,
-		v_wrap = render.WRAP_CLAMP_TO_EDGE
-	}
-	SHADOWMAP.target = render.render_target({[render.BUFFER_COLOR_BIT] = SHADOWMAP.params})
-	
+	render_target_size = math.max(width, height)
 	quad_pred = render.predicate({ "light_quad" })
 	clear_color = vmath.vector4(0,0,0,1)
 end
@@ -167,16 +167,30 @@ function M.draw(view, projection, occluder_predicate)
 	local width = render.get_window_width()
 	local height = render.get_window_height()
 	local size = math.max(width, height)
-
-	for _,light in ipairs(lights) do
-		if light.enabled then
-			local light_size = light.radius * 2
+	local size_changed = render_target_size ~= size
+	render_target_size = size
+	
+	for _,light in pairs(lights) do
+		if light.remove then
+			render.delete_render_target(light.occluder)
+			render.delete_render_target(light.shadowmap)
+			lights[lights.id] = nil
+		elseif light.enabled then
+			if not light.occluder then create_occluder(light, size) end
+			if not light.shadowmap then create_shadowmap(light, size) end
+			if size_changed then
+				resize_occluder(light, size)
+				resize_shadowmap(light, size)
+			end
+			local light_size = math.ceil(light.radius * 2)
 			light.size = light_size
 			light.size_half = light_size / 2
 			light.falloff = 1
-			draw_occluder(light, view, projection, occluder_predicate)
-			draw_shadow_map(light)
-			draw_light(light, view, projection)
+			if light.size >= 1 then
+				draw_occluder(light, view, projection, occluder_predicate)
+				draw_shadow_map(light)
+				draw_light(light, view, projection)
+			end
 		end
 	end
 end
@@ -196,6 +210,8 @@ function M.add(properties)
 		angle = properties.angle or 360,
 		radius = properties.radius,
 		enabled = properties.enabled,
+		occluder = nil,
+		shadowmap = nil,
 	}
 
 	return id
@@ -204,13 +220,14 @@ end
 function M.remove(id)
 	assert(id)
 	assert(lights[id], "Unable to find light")
-	lights[id] = nil
+	local light = lights[id]
+	light.remove = true
 end
 
 function M.set_light_radius(id, radius)
 	assert(id)
 	assert(lights[id], "Unable to find light")
-	assert(radius)
+	assert(radius, "You must provide a radius")
 	local light = lights[id]
 	light.radius = radius
 end
@@ -230,10 +247,15 @@ function M.set_angle(id, angle)
 end
 
 function M.set_color(id, color)
+	assert(id)
+	assert(lights[id], "Unable to find light")
+	assert(color, "You must provide a color")
 	lights[id].color = color
 end
 
 function M.set_enabled(id, enabled)
+	assert(id)
+	assert(lights[id], "Unable to find light")
 	lights[id].enabled = enabled
 end
 

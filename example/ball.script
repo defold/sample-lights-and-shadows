@@ -6,7 +6,7 @@ function init(self)
 	msg.post("camera", "acquire_camera_focus")
 	self.direction = vmath.vector3(0)
 
-	go.animate("/blue_light#lightsource", "radius", go.PLAYBACK_LOOP_PINGPONG, 256, go.EASING_INOUTQUAD, 4.0)
+	go.animate("/blue_light#lightsource", "radius", go.PLAYBACK_LOOP_PINGPONG, 0, go.EASING_INOUTQUAD, 4.0)
 end
 
 function update(self, dt)
