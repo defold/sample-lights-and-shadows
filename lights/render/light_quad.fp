@@ -30,9 +30,11 @@ void main(void) {
 	// The tex coord to sample our 1D lookup texture
 	float coord = (theta + PI) / (2.0 * PI);
 	vec2 tc = vec2(coord, 0.0);
-	float visible = sample_from_distance_map(tc, r);
+	
+	float lightCurve = sample_from_distance_map(tc, r);
+	float falloffCurve = smoothstep(1.0, 0.0, r * falloff.x);
 
 	// Multiply the summed amount by our distance, which gives us a radial falloff
 	// Then multiply by vertex (light) color  
-	gl_FragColor = color * vec4(sample_from_distance_map(tc, r) * smoothstep(1.0, 0.0, r * falloff.x));
+	gl_FragColor = color * vec4(1, 1, 1, lightCurve * falloffCurve);
 }

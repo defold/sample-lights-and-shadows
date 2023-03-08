@@ -173,7 +173,6 @@ function M.draw(view, projection, occluder_predicate)
 			local light_size = light.radius * 2
 			light.size = light_size
 			light.size_half = light_size / 2
-			light.falloff = 1
 			draw_occluder(light, view, projection, occluder_predicate)
 			draw_shadow_map(light)
 			draw_light(light, view, projection)
@@ -196,6 +195,7 @@ function M.add(properties)
 		angle = properties.angle or 360,
 		radius = properties.radius,
 		enabled = properties.enabled,
+		falloff = properties.falloff
 	}
 
 	return id
