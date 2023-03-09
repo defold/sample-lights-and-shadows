@@ -21,7 +21,7 @@ local function draw_light(light, view, projection)
 	render.set_viewport(0, 0, window_width, window_height)
 	render.set_projection(projection)
 	render.set_view(view)
-	
+
 	render.set_render_target(render.RENDER_TARGET_DEFAULT)
 	render.enable_texture(0, light.shadowmap, render.BUFFER_COLOR_BIT)
 
@@ -56,7 +56,7 @@ local function draw_shadow_map(light)
 
 	render.set_render_target_size(light.shadowmap, light.size, 1)
 	render.set_render_target(light.shadowmap, { transient = { render.BUFFER_DEPTH_BIT } } )
-	
+
 	-- Clear then draw
 	render.clear({[render.BUFFER_COLOR_BIT] = BLACKTRANSPARENT})
 
@@ -90,7 +90,7 @@ local function draw_occluder(light, view, projection, occluder_predicate)
 	-- Set view matrix to light position
 	render.set_view(
 	vmath.matrix4_look_at(
-	vmath.vector3(-light.size_half, -light.size_half, 0) + light.position, 
+	vmath.vector3(-light.size_half, -light.size_half, 0) + light.position,
 	vmath.vector3(-light.size_half, -light.size_half, -1) + light.position,
 	vmath.vector3(0, 1, 0)))
 
@@ -169,7 +169,7 @@ function M.draw(view, projection, occluder_predicate)
 	local size = math.max(width, height)
 	local size_changed = render_target_size ~= size
 	render_target_size = size
-	
+
 	for _,light in pairs(lights) do
 		if light.remove then
 			render.delete_render_target(light.occluder)
@@ -185,7 +185,6 @@ function M.draw(view, projection, occluder_predicate)
 			local light_size = math.ceil(light.radius * 2)
 			light.size = light_size
 			light.size_half = light_size / 2
-			light.falloff = 1
 			if light.size >= 1 then
 				draw_occluder(light, view, projection, occluder_predicate)
 				draw_shadow_map(light)
@@ -210,6 +209,7 @@ function M.add(properties)
 		angle = properties.angle or 360,
 		radius = properties.radius,
 		enabled = properties.enabled,
+		falloff = properties.falloff,
 		occluder = nil,
 		shadowmap = nil,
 	}
