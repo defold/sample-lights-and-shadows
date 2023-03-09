@@ -20,6 +20,8 @@ The main components of this light and shadow casting example are:
    * `color` [vector4] - Color of the lightsource (RGBA)
    * `arc_angle` [number] - Arc angle of the lightsource. Can be used to generate a cone of light up to an arc angle of 180 degrees. Anything above 180 degrees will result in a full circle.
    * `static` [boolean] - Use this for static lights that do not move or rotate to skip updates of light position and rotation each frame.
+   * `falloff` [number] - This controls the light intensity. With a falloff of 1.0 the light intensity gradually decreases until there is no light right at the edge. With a falloff of 2 the light intensity decreases twice as fast.
+   * `enabled` [boolean] - Set to false to disable the light.
 * `lights/render/light_quad.go` - A game object with a basic model quad, used as a render target when drawing lights and shadows.
 * `lights/render/lights.render` and `lights/render/lights.render_script` - The render file and render script used when drawing lights and shadows (and also all of the standard Defold components such as sprites, particles, tilemaps etc)
 * `lights/materials/light_occluder_*.material` - Materials to use for sprite, tilemaps and other components that should occlude light and cast shadows.
