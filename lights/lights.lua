@@ -174,7 +174,7 @@ function M.draw(view, projection, occluder_predicate)
 		if light.remove then
 			render.delete_render_target(light.occluder)
 			render.delete_render_target(light.shadowmap)
-			lights[lights.id] = nil
+			lights[light.id] = nil
 		elseif light.enabled then
 			if not light.occluder then create_occluder(light, size) end
 			if not light.shadowmap then create_shadowmap(light, size) end
