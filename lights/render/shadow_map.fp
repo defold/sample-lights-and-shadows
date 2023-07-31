@@ -22,7 +22,8 @@ void main()
 
 	// Coord which we will sample from occlude map
 	vec2 coord = vec2(-inverseRes * sin(theta), inverseRes * cos(theta));
-	vec2 step = coord;
+	// Multiply coord by 1 + epsilon to fix shadow map rendering at half distance on AMD
+	vec2 step = coord * 1.00001;
 	float resy = resolution.y;
 	for (float y = 1.0; y < 50000.0; y += 1.0) {
 		// webgl doesn't allow for-loops with non constant end value
