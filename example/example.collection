@@ -3,20 +3,7 @@ instances {
   id: "light_quad"
   prototype: "/lights/render/light_quad.go"
   position {
-    x: 0.0
-    y: 0.0
     z: 0.5
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 instances {
@@ -25,18 +12,6 @@ instances {
   position {
     x: -39.0
     y: -94.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 instances {
@@ -45,18 +20,6 @@ instances {
   position {
     x: 172.0
     y: 76.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 instances {
@@ -65,18 +28,6 @@ instances {
   position {
     x: -84.0
     y: 59.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 instances {
@@ -85,18 +36,10 @@ instances {
   position {
     x: 126.0
     y: -6.0
-    z: 0.0
   }
   rotation {
-    x: 0.0
-    y: 0.0
     z: -0.37060347
     w: 0.92879117
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 instances {
@@ -105,18 +48,6 @@ instances {
   position {
     x: -53.0
     y: -31.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 instances {
@@ -125,18 +56,10 @@ instances {
   position {
     x: -176.0
     y: 13.0
-    z: 0.0
   }
   rotation {
-    x: 0.0
-    y: 0.0
     z: 0.554552
     w: 0.832149
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 instances {
@@ -145,18 +68,6 @@ instances {
   position {
     x: 49.0
     y: 121.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 instances {
@@ -165,18 +76,10 @@ instances {
   position {
     x: -156.0
     y: 163.0
-    z: 0.0
   }
   rotation {
-    x: 0.0
-    y: 0.0
     z: -0.29740807
     w: 0.9547505
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 instances {
@@ -185,18 +88,10 @@ instances {
   position {
     x: -139.0
     y: -131.0
-    z: 0.0
   }
   rotation {
-    x: 0.0
-    y: 0.0
     z: 0.7704998
     w: 0.63744026
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }
 collection_instances {
@@ -205,13 +100,6 @@ collection_instances {
   position {
     x: 48.0
     y: 44.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
   }
   instance_properties {
     id: "go"
@@ -224,11 +112,6 @@ collection_instances {
       }
     }
   }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
-  }
 }
 scale_along_z: 0
 embedded_instances {
@@ -236,35 +119,11 @@ embedded_instances {
   data: "components {\n"
   "  id: \"floor\"\n"
   "  component: \"/example/floor.tilemap\"\n"
-  "  position {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "  }\n"
-  "  rotation {\n"
-  "    x: 0.0\n"
-  "    y: 0.0\n"
-  "    z: 0.0\n"
-  "    w: 1.0\n"
-  "  }\n"
-  "  property_decls {\n"
-  "  }\n"
   "}\n"
   ""
   position {
     x: -1200.0
     y: -600.0
     z: -1.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
-  scale3 {
-    x: 1.0
-    y: 1.0
-    z: 1.0
   }
 }

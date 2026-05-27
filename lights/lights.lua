@@ -23,7 +23,7 @@ local function draw_light(light, view, projection)
 	render.set_view(view)
 
 	render.set_render_target(render.RENDER_TARGET_DEFAULT)
-	render.enable_texture(0, light.shadowmap, render.BUFFER_COLOR_BIT)
+	render.enable_texture(0, light.shadowmap, graphics.BUFFER_TYPE_COLOR0_BIT)
 
 	local constants = render.constant_buffer()
 	constants.light_pos = vmath.vector4(light.position.x, light.position.y, light.position.z, 0)
@@ -55,13 +55,13 @@ local function draw_shadow_map(light)
 	vmath.vector3(0, 1, 0)))
 
 	render.set_render_target_size(light.shadowmap, light.size, 1)
-	render.set_render_target(light.shadowmap, { transient = { render.BUFFER_DEPTH_BIT } } )
+	render.set_render_target(light.shadowmap, { transient = { graphics.BUFFER_TYPE_DEPTH_BIT } } )
 
 	-- Clear then draw
-	render.clear({[render.BUFFER_COLOR_BIT] = BLACKTRANSPARENT})
+	render.clear({[graphics.BUFFER_TYPE_COLOR0_BIT] = BLACKTRANSPARENT})
 
 	render.enable_material("shadow_map")
-	render.enable_texture(0, light.occluder, render.BUFFER_COLOR_BIT)
+	render.enable_texture(0, light.occluder, graphics.BUFFER_TYPE_COLOR0_BIT)
 
 	-- Constants
 	local constants = render.constant_buffer()
@@ -95,16 +95,16 @@ local function draw_occluder(light, view, projection, occluder_predicate)
 	vmath.vector3(0, 1, 0)))
 
 	-- Clear then draw
-	render.set_render_target(light.occluder, { transient = { render.BUFFER_DEPTH_BIT } } )
-	render.clear({[render.BUFFER_COLOR_BIT] = BLACKTRANSPARENT})
+	render.set_render_target(light.occluder, { transient = { graphics.BUFFER_TYPE_DEPTH_BIT } } )
+	render.clear({[graphics.BUFFER_TYPE_COLOR0_BIT] = BLACKTRANSPARENT})
 
 	-- Draw occluder
 	render.set_depth_mask(false)
-	render.disable_state(render.STATE_DEPTH_TEST)
-	render.disable_state(render.STATE_STENCIL_TEST)
-	render.enable_state(render.STATE_BLEND)
-	render.set_blend_func(render.BLEND_SRC_ALPHA, render.BLEND_ONE_MINUS_SRC_ALPHA)
-	render.disable_state(render.STATE_CULL_FACE)
+	render.disable_state(graphics.STATE_DEPTH_TEST)
+	render.disable_state(graphics.STATE_STENCIL_TEST)
+	render.enable_state(graphics.STATE_BLEND)
+	render.set_blend_func(graphics.BLEND_FACTOR_SRC_ALPHA, graphics.BLEND_FACTOR_ONE_MINUS_SRC_ALPHA)
+	render.disable_state(graphics.STATE_CULL_FACE)
 
 	render.draw(occluder_predicate)
 
@@ -114,15 +114,15 @@ end
 
 local function create_occluder(light, size)
 	local params = {
-		format = render.FORMAT_RGBA,
+		format = graphics.TEXTURE_FORMAT_RGBA,
 		width = size,
 		height = size,
-		min_filter = render.FILTER_LINEAR,
-		mag_filter = render.FILTER_LINEAR,
-		u_wrap = render.WRAP_CLAMP_TO_EDGE,
-		v_wrap = render.WRAP_CLAMP_TO_EDGE
+		min_filter = graphics.TEXTURE_FILTER_LINEAR,
+		mag_filter = graphics.TEXTURE_FILTER_LINEAR,
+		u_wrap = graphics.TEXTURE_WRAP_CLAMP_TO_EDGE,
+		v_wrap = graphics.TEXTURE_WRAP_CLAMP_TO_EDGE
 	}
-	local rt = render.render_target({[render.BUFFER_COLOR_BIT] = params})
+	local rt = render.render_target({[graphics.BUFFER_TYPE_COLOR0_BIT] = params})
 	if not light then return rt end
 	light.occluder = rt
 end
@@ -133,15 +133,15 @@ end
 
 local function create_shadowmap(light, size)
 	local params = {
-		format = render.FORMAT_RGBA,
+		format = graphics.TEXTURE_FORMAT_RGBA,
 		width = size,
 		height = 1,
-		min_filter = render.FILTER_LINEAR,
-		mag_filter = render.FILTER_LINEAR,
-		u_wrap = render.WRAP_CLAMP_TO_EDGE,
-		v_wrap = render.WRAP_CLAMP_TO_EDGE
+		min_filter = graphics.TEXTURE_FILTER_LINEAR,
+		mag_filter = graphics.TEXTURE_FILTER_LINEAR,
+		u_wrap = graphics.TEXTURE_WRAP_CLAMP_TO_EDGE,
+		v_wrap = graphics.TEXTURE_WRAP_CLAMP_TO_EDGE
 	}
-	local rt = render.render_target({[render.BUFFER_COLOR_BIT] = params})
+	local rt = render.render_target({[graphics.BUFFER_TYPE_COLOR0_BIT] = params})
 	if not light then return rt end
 	light.shadowmap = rt
 end

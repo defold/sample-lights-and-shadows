@@ -1,10 +1,7 @@
 image: "/example/asset/block_square.png"
 tile_width: 16
 tile_height: 16
-tile_margin: 0
-tile_spacing: 0
 collision: "/example/asset/block_square.png"
-material_tag: "tile"
 convex_hulls {
   index: 0
   count: 6
@@ -87,5 +84,3 @@ convex_hulls {
 }
 collision_groups: "block"
 extrude_borders: 2
-inner_padding: 0
-sprite_trim_mode: SPRITE_TRIM_MODE_OFF

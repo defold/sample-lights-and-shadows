@@ -1,17 +1,6 @@
 components {
   id: "block_l"
   component: "/example/block_l.tilemap"
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
 }
 embedded_components {
   id: "collisionobject"
@@ -26,18 +15,5 @@ embedded_components {
   "mask: \"ball\"\n"
   "linear_damping: 0.5\n"
   "angular_damping: 0.7\n"
-  "locked_rotation: false\n"
-  "bullet: false\n"
   ""
-  position {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-  }
-  rotation {
-    x: 0.0
-    y: 0.0
-    z: 0.0
-    w: 1.0
-  }
 }
